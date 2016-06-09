@@ -31,7 +31,8 @@ express@3.4.8 node_modules/express
 > node constoso-server.js
 
 ```
-$ node contoso-server.js 
+$ node contoso-server.js true
+node contoso-server.js true
 listening on port 3335 .
 ```
 
