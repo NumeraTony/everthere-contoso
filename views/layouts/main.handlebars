@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Insights Constoso SDK Sample</title>
+		<style>
+		.boxsizingBorder {
+			width: 100%;
+			font-size: small;
+ 		   -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+                   box-sizing: border-box;
+        }
+		</style>
+		{{#if isDevelopment}}
+		<script id="numera-insights-jssdk" type="text/javascript" src="http://dev-everthere.numera-alpha.com:8180/assets/js/insights-client.js"></script>
+		{{else}}
+		<script id="numera-insights-jssdk" type="text/javascript" src="http://everthere.numera-staging.com/assets/js/insights-client.js"></script>
+		{{/if}}
+	</head>
+	<body>
+		{{{body}}}
+	</body>
+</html>

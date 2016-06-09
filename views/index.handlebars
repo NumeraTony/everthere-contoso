@@ -1,0 +1,111 @@
+<h1>Insights SDK example</h1>
+
+Initializing the SDK. Look at browser developers console for details.
+
+
+<!-- for stage this is
+http://evertyere.numera-staging.com/assets/js/insights-client.js
+-->
+
+<!-- for prod this is
+http://evertyere.numera.com/assets/js/insights-client.js
+or min version at:
+//everthere.numera.com/assets/js/insights-client.min.js
+-->
+
+<script type="text/javascript">
+
+	function renderResult(d){
+		if (d){
+			document.getElementById('_responds').value = JSON.stringify(d, null, 2);
+		} else {
+			document.getElementById('_responds').value = 'doh';
+		}
+	}
+
+	NumeraInsightsAPI.init(
+		{
+			applicationId: '{{applicationId}}',
+			realm: '{{realm}}',
+			nonce: {{nonce}},
+			proof: '{{proof}}',
+
+			debug: true,
+			disable_cors: false,
+			jsonp_timeout: 5000
+
+		}, function(d) {
+			console.log("init-callback");
+			renderResult(d);
+		}
+	);
+
+
+
+	function lookupDevice(){
+		var _imei =  document.getElementById('_imei').value;
+		var data = {
+			serialNumber: _imei,
+			deviceType: 'libris'
+		};
+		NumeraInsightsAPI.submit('device.lookup', data, function(d) {
+			renderResult(d);
+		});
+	}
+
+	function deleteInvitation(){
+		var _invitationId =  document.getElementById('_invitationId').value;
+		var data = {
+			invitationId: _invitationId
+		};
+		NumeraInsightsAPI.submit('invitation.delete', data, function(d) {
+			renderResult(d);
+		});
+
+	}
+
+	function registerUser(){
+		var _imei =  document.getElementById('_imei').value;
+		var _email =  document.getElementById('_email').value;
+		var data = {
+			serialNumber: _imei,
+			deviceType: 'libris',
+			email: _email,
+			url: 'whyisthis?',
+			realm: 'myguardian'  //this would allow to send out invites in french or english if there were multiple sub-domains
+
+		};
+		NumeraInsightsAPI.submit('device.signup', data, function(d) {
+			console.log(JSON.stringify(d, null, 2));
+			renderResult(d);
+		});
+	}
+</script>
+
+<h2>Data</h2>
+imei: <input type="text" name="imei" value="358859040028310" id="_imei"/><br/>
+email: <input type="text" name="email" value="ensing+test@gmail.com" id="_email"/><br/>
+invitationId: <input type="text" name="invitationId" value="" id="_invitationId"/><br/>
+
+<h1>Query the state of the device</h1>
+(pending invites? accepted invites?)<br/>
+<a href="javascript:lookupDevice()">device.lookup(imei, deviceType)</a>
+<br/>
+<h1>Create carereceiver invite</h1>
+<a href="javascript:registerUser()">device.signup(imei, email)</a>
+<p>
+This will send out an email.
+<ul>
+<li>Invite to carereceiver (valid for 30 days). Once the carereceiver signsup he/she will get a welcome email message</li>
+<li>Invite to existing user (if email was already account)</li>
+</ul>
+</p>
+
+<h1>Delete invite</h1>
+<a href="javascript:deleteInvitation()">invitation.delete(invitationId)</a>
+<p>
+This will delete an invitation (use this for expired invitation, or for invitations send to the wrong email)
+</p>
+
+<h1>Reponds</h1>
+<textarea class="boxsizingBorder" id="_responds" rows="30"></textarea>

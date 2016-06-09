@@ -1,0 +1,6 @@
+*~
+*/npm-debug.log
+*.sublime-workspace
+.idea/
+/dist/
+/node_modules/
